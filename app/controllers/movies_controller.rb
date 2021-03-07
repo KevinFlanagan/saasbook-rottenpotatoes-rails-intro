@@ -16,11 +16,12 @@ class MoviesController < ApplicationController
       @ratings_to_show = params[:ratings] 
       session[:ratings] = @ratings_to_show
       elsif session[:ratings]
-        @ratings_to_show = session[ratings] #with this line one of the tick boxes MUST be ticked
+        #@ratings_to_show = session[ratings] #with this line one of the tick boxes MUST be ticked
       else
         @ratings_to_show = nil
     end
     
+   #if statements
     
     
   end
