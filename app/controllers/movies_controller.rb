@@ -16,7 +16,7 @@ class MoviesController < ApplicationController
       @ratings_to_show = params[:ratings].keys
       session[:ratings] = @ratings_to_show
       elsif session[:ratings]
-        @ratings_to_show = session[ratings] #with this line one of the tick boxes MUST be ticked
+        #@ratings_to_show = session[ratings] #with this line one of the tick boxes MUST be ticked
       else
         @ratings_to_show = @all_ratings
         session[:ratings] = @ratings_to_show  
@@ -29,7 +29,7 @@ class MoviesController < ApplicationController
    end
    
     #displays the movies
-   @movies = Movie.with_ratings(session[:ratings])
+   #@movies = Movie.with_ratings(session[:ratings])
     
    if params[:sort]
      @sort = params[:sort]
@@ -43,7 +43,7 @@ class MoviesController < ApplicationController
      @title_classes = "hilite text-primary"
    elsif @sort == "release_date"
      @movies = @movies.order("release_date")
-     @release_date_classes = "hilite text-primary"
+     @release_date_classes = "hilite text-primary" # hi lite the text
    end
   end
 
