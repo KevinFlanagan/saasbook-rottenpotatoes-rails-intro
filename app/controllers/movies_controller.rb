@@ -9,18 +9,27 @@ class MoviesController < ApplicationController
   def index
     @movies = Movie.all
     @all_ratings = Movie.all_ratings
-    @sort = params[:sort]
+    @sort = params[:sort] || session[:sort]
     @ratings_to_show = [] 
     
-    if params[:ratings]
-      @ratings_to_show = params[:ratings].keys
-      session[:ratings] = @ratings_to_show
-      elsif session[:ratings]
-        #@ratings_to_show = session[ratings] #with this line one of the tick boxes MUST be ticked
-      else
-        @ratings_to_show = @all_ratings
-        session[:ratings] = @ratings_to_show  
-    end
+    
+    if params[:sort].nil? && params[:ratings].nil? &&
+      (!session[:sort].nil? || !session[:ratings].nil?)
+      redirect_to movies_path(:sort => session[:sort], :ratings => session[:ratings])
+    end   
+    
+    session[:sort] = @sort
+    session[:ratings] = @ratings
+    
+    #if params[:ratings]
+     # @ratings_to_show = params[:ratings].keys || session[:ratings].keys
+      #session[:ratings] = @ratings_to_show
+      #elsif session[:ratings]
+       # @ratings_to_show = session[:ratings] 
+      #else
+       # @ratings_to_show = @all_ratings
+        #session[:ratings] = @ratings_to_show  
+    #end
     
    #if statements for rating params
    if !params[:sort] && !params[:ratings]
@@ -28,10 +37,7 @@ class MoviesController < ApplicationController
     session[:ratings] = @ratings_to_show
    end
    
-    #displays the movies
-   #@movies = Movie.with_ratings(session[:ratings])
-    
-   if params[:sort]
+   if params[:sort] 
      @sort = params[:sort]
      session[:sort] = @sort
    else
