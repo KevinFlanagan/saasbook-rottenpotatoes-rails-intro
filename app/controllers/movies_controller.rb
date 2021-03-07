@@ -13,17 +13,38 @@ class MoviesController < ApplicationController
     @ratings_to_show = [] 
     
     if params[:ratings]
-      @ratings_to_show = params[:ratings] 
+      @ratings_to_show = params[:ratings].keys
       session[:ratings] = @ratings_to_show
       elsif session[:ratings]
-        #@ratings_to_show = session[ratings] #with this line one of the tick boxes MUST be ticked
+        @ratings_to_show = session[ratings] #with this line one of the tick boxes MUST be ticked
       else
-        @ratings_to_show = nil
+        @ratings_to_show = @all_ratings
+        session[:ratings] = @ratings_to_show  
     end
     
-   #if statements
+   #if statements for rating params
+   if !params[:sort] && !params[:ratings]
+    @ratings_to_show = @all_ratings
+    session[:ratings] = @ratings_to_show
+   end
+   
+    #displays the movies
+   @movies = Movie.with_ratings(session[:ratings])
     
-    
+   if params[:sort]
+     @sort = params[:sort]
+     session[:sort] = @sort
+   else
+     @sort = session[:sort]
+   end
+   
+   if @sort == "title"
+     @movies = @movies.order("title")
+     @title_classes = "hilite text-primary"
+   elsif @sort == "release_date"
+     @movies = @movies.order("release_date")
+     @release_date_classes = "hilite text-primary"
+   end
   end
 
   def new
